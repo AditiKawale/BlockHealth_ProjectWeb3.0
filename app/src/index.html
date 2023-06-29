@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BlockHealth Solutions</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    
+    <script src="js/bundle.js"></script>
+
+
+    <!-- Custom CSS -->
+    <style>
+    .panel-heading{
+        margin-bottom: 20px;
+    }
+    .navbar{
+        margin-bottom: 70px;
+    }
+
+    nav ul{
+  float: right;
+  margin-right: 30px;
+  padding-right: 15px;
+}
+
+nav ul li{
+  list-style-type: none;
+  display: inline-block;
+    transition: 0.5s all;
+}
+ ul li a{
+  text-decoration: none;
+  color: white;
+  padding: 20px;
+}
+
+nav ul li:hover
+{
+ /* background-color: #d8bfd7 */
+ padding: 7 10px;
+ line-height: 40px;
+ border: 1px solid white;
+ border-radius: 3px
+}
+    </style>
+
+</head>
+
+<body style="background-image: url('./images/Okayama_Red_Cross_Hospital.jpg');background-repeat: no-repeat;background-attachment: fixed;background-size: cover;">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="background-color: #0004;">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" style="color:white;font-family:fantasy ; font-size: 5rem;margin: 10px;">BlockHealth Solutions</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li style="margin: 10px;">
+                        <!-- <a href="./index.html">Login</a> -->
+                        <a href="./index.html" style="padding: 12px;margin-left: 5px;color: rgb(0, 0, 0); font-size: 20px; font-family: cursive;">HOME</a>
+                    </li>
+                    <li style="margin: 10px;">
+                        <!-- <a href="./index.html">Login</a> -->
+                        <a href="./about.html" style="padding: 12px;margin-left: 5px;color: rgb(0, 0, 0); font-size: 20px;font-family: cursive;">ABOUT US</a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active" style="margin: 10px;">
+                        <!-- <a href="./index.html">Login</a> -->
+                            <button class="btn btn-warning btn-lg" onclick="login()">Login</button>
+                    </li>
+                    <li style="margin: 10px;">
+                        <a href="./register.html" class="btn btn-success btn-lg" style="padding: 12px;margin-left: 5px;color: white;">Register</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    
+
+    <!-- Page Content -->
+  
+      
+       
+           
+
+    <div class="container" style="margin-top: 9%; border-radius: 10%;  position: relative;">
+       <marquee style="font-family: fantasy;color: green;background-color: aliceblue; opacity: 0.9;" scrollamount="10" behavior="scroll"> <h1 >Empowering Patients and Healthcare Providers with Blockchain Innovation....Building trust in HealthCare with Blockchain...</h1></marquee>
+    </div>
+
+    <div>
+     <center>   <button class="btn btn-danger btn-lg" style="padding: 20px;margin: 10rem;border-radius: 10px;font-weight: bold;" onclick="login()">BOOK YOUR APPOINTMENT NOW!</button>   </center>
+    </div>
+
+
+    <div class="alert alert-warning col-sm-8 col-sm-offset-2" style="display: none;opacity: 0.9;">                                               
+        <h4 class="text-center"><strong>Unregistered user!!! </strong> <br><br>  Metamask Account is required for Login<br><br> 
+             Click <a href="./register.html">  here  </a> to register.</h3>
+                        
+</div>
+    <!-- /.container -->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/web3.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        connect();    
+        function login(){
+            $(".alert-warning").hide();
+
+            publicKey= web3.currentProvider.selectedAddress;
+            console.log(publicKey);
+            contractInstance.get_patient_list(function(error, result){
+                if(!error){
+                    var PatientList = result;
+                    for(var i = 0; i < PatientList.length; i++) {
+                        if (publicKey.toLowerCase() == PatientList[i]) {
+                            location.href = "./patient.html?key=" + publicKey;
+                        }
+                    }
+                    
+                } else {
+                    console.log(error);
+                    console.log("Invalid User!");
+                    $(".alert-warning").show();
+                }
+            });
+
+            contractInstance.get_doctor_list(function(error, result){
+                if(!error){
+                    var DoctorList = result;
+                    for(var i = 0; i < DoctorList.length; i++) {
+                        if (publicKey.toLowerCase() == DoctorList[i]) {
+                            location.href = "./doctor.html?key=" + publicKey;
+                        }
+                    }
+                    
+                } else {
+                    console.log(error);
+                    $(".alert-warning").show();
+                }
+            }); 
+            
+            console.log("Invalid User!");
+            $(".alert-warning").show();
+        }
+
+     
+        
+    </script>
+
+</body>
+
+</html>
